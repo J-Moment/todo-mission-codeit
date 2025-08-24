@@ -1,0 +1,71 @@
+:root {
+    /* Slate */
+    --slate-900: #0F172A;
+    --slate-800: #1E293B;
+    --slate-500: #64748B;
+    --slate-400: #94A3B8;
+    --slate-300: #CBD5E1;
+    --slate-200: #E2E8F0;
+    --slate-100: #F1F5F9;
+
+    /* Colors */
+    --violet-600: #7C3AED;
+    --violet-100: #EDE9FE;
+
+    --rose-500: #F43F5E;
+    --lime-300: #BEF264;
+
+    --amber-800: #92400E;
+}
+
+@font-face {
+    font-family: 'NanumSquare';
+    src: url('https://cdn.jsdelivr.net/gh/webfontworld/nanum/NanumSquare-Regular.woff2') format('woff2');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'NanumSquare';
+    src: url('https://cdn.jsdelivr.net/gh/webfontworld/nanum/NanumSquare-Bold.woff2') format('woff2');
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: 'NanumSquare';
+    src: url('https://cdn.jsdelivr.net/gh/webfontworld/nanum/NanumSquare-ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+}
+
+body {
+    font-family: 'NanumSquare', sans-serif;
+}
+
+/* Bold 20px */
+.text-20b {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+/* Bold 18px */
+.text-18b {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+/* Bold 16px */
+.text-16b {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+/* ExtraBold 16px */
+.text-16eb {
+    font-size: 16px;
+    font-weight: 800;
+}
+
+/* Regular 16px */
+.text-16r {
+    font-size: 16px;
+    font-weight: 400;
+}

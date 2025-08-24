@@ -1,4 +1,5 @@
-import Nav from '@/components/Nav'
+import Nav from '@components/Nav'
+import '../styles/global.css'; 
 
 export const metadata = {
   title: 'Next.js',
