@@ -1,0 +1,29 @@
+.wrap {
+    --s: 32px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: var(--s);
+    height: var(--s);
+
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+
+    /* 눌림 애니메이션(아래로 살짝) */
+    transition: transform .04s ease;
+}
+
+/* 마우스로 클릭(활성) 시 애니메이션 */
+.wrap:active {
+    transform: translateY(1px);
+}
+
+/* 키보드 포커스 링(접근성) */
+.wrap:focus-visible {
+    outline: 2px solid var(--violet-600);
+    outline-offset: 3px;
+}
