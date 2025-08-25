@@ -1,9 +1,8 @@
 'use client';
 
-import { useMemo, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
-
+import { useRouter } from 'next/navigation';
 import styles from '@/styles/Homepage.module.css';
 
 import AddToDoInput from '@/app/_components/AddToDoInput';
@@ -11,81 +10,98 @@ import Button from '@/app/_components/Button';
 import CheckList, { CheckItem } from '@/app/_components/CheckList';
 import Plus from '@/icons/Plus';
 
+import { listItems, createItem, toggleComplete, type Item } from '@/lib/api';
+
+// Item → CheckItem 변환
+function toCheckItem(i: Item): CheckItem {
+  return { id: String(i.id), label: i.name, checked: i.isCompleted };
+}
+
 export default function HomePage() {
   const router = useRouter();
 
-  const [items, setItems] = useState<CheckItem[]>([
-    { id: '1', label: '비타민 챙겨 먹기', checked: false },
-    { id: '2', label: '맥주 마시기', checked: false },
-    { id: '3', label: '운동하기', checked: false },
-    { id: '4', label: '은행 다녀오기', checked: true },
-    { id: '5', label: '비타민 챙겨 먹기', checked: true },
-  ]);
+  // 전체 아이템
+  const [items, setItems] = useState<Item[]>([]);
+  // 입력창 상태
   const [text, setText] = useState('');
 
-  const todo = useMemo(() => items.filter(i => !i.checked), [items]);
-  const done = useMemo(() => items.filter(i => i.checked), [items]);
+  // 할 일 로드
+  useEffect(() => {
+    listItems({ page: 1, pageSize: 100 })
+      .then(setItems)
+      .catch((e) => alert(e.message));
+  }, []);
 
-  const toggle = (id: string, next: boolean) =>
-    setItems(prev => prev.map(i => (i.id === id ? { ...i, checked: next } : i)));
+  // 항목 분리
+  const todo = useMemo(() => items.filter((i) => !i.isCompleted).map(toCheckItem), [items]);
+  const done = useMemo(() => items.filter((i) => i.isCompleted).map(toCheckItem), [items]);
 
-  const add = () => {
-    const label = text.trim();
-    if (!label) return;
-    setItems(prev => [{ id: crypto.randomUUID(), label, checked: false }, ...prev]);
-    setText('');
+  const add = async () => {
+    const name = text.trim();
+    if (!name) return;
+    try {
+      const created = await createItem({ name });
+      setItems((prev) => [created, ...prev]);
+      setText('');
+    } catch (e: any) {
+      alert(e.message);
+    }
+  };
+// 엔터키 활용 가능 핸들러
+  const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key !== 'Enter') return;
+    if (e.nativeEvent.isComposing) return;
+    e.preventDefault();
+    add();
   };
 
-  /** 라벨 클릭 → 상세로 이동 (id는 경로, label/checked는 쿼리로 전달) */
-  const openDetail = (item: CheckItem) => {
-    const q = new URLSearchParams({
-      label: item.label,
-      checked: item.checked ? '1' : '0',
-    });
-    router.push(`/detail/${item.id}?${q.toString()}`);
+  const toggle = async (id: string, next: boolean) => {
+    const item = items.find((i) => String(i.id) === id);
+    if (!item) return;
+    try {
+      const updated = await toggleComplete(item);
+      setItems((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
+    } catch (e: any) {
+      alert(e.message);
+    }
   };
+
+  // 라벨을 누르면 상세로 이동
+  const openDetail = (ci: CheckItem) => router.push(`/detail/${ci.id}?label=${encodeURIComponent(ci.label)}&checked=${ci.checked ? '1' : '0'}`);
 
   return (
     <main className={styles.page}>
-      {/* 헤더 */}
       <header className={styles.header}>
         <div className={styles.inputRow}>
           <AddToDoInput
             full
             placeholder="할 일을 입력해주세요"
             value={text}
-            onChange={e => setText(e.target.value)}
+            onChange={(e) => setText(e.target.value)}
+            onKeyDown={handleEnter}
           />
 
-          {/* 데스크탑/태블릿: 큰 버튼 */}
+          {/* 데스크탑/태블릿 버튼 */}
           <div className={styles.addBtnLgWrap}>
             <Button variant="normal" className="text-16b" onClick={add}>
               <Plus size={16} /> 추가하기
             </Button>
           </div>
 
-          {/* 모바일: miniPill 아이콘 버튼만 노출 */}
+          {/* 모바일: miniPill 만 보이게 해 둔 상태 */}
           <div className={styles.addBtnSm}>
-            <Button
-              variant="normal"
-              shape="miniPill"
-              aria-label="할 일 추가"
-              onClick={add}
-            >
+            <Button variant="normal" shape="miniPill" aria-label="할 일 추가" onClick={add}>
               <Plus size={16} />
             </Button>
           </div>
         </div>
       </header>
 
-      {/* 보드 */}
       <section className={styles.board}>
-        {/* TO DO */}
         <div className={styles.col}>
           <div className={styles.sectionHead}>
             <Image src="/icons/todo.svg" alt="TO DO" width={101} height={36} priority />
           </div>
-
           {todo.length ? (
             <CheckList items={todo} onToggle={toggle} onLabelClick={openDetail} />
           ) : (
@@ -93,12 +109,10 @@ export default function HomePage() {
           )}
         </div>
 
-        {/* DONE */}
         <div className={styles.col}>
           <div className={styles.sectionHead}>
             <Image src="/icons/done.svg" alt="DONE" width={101} height={36} priority />
           </div>
-
           {done.length ? (
             <CheckList items={done} onToggle={toggle} onLabelClick={openDetail} />
           ) : (
@@ -110,14 +124,10 @@ export default function HomePage() {
   );
 }
 
-/** 비어있을 때 안내 */
 function Empty({ type }: { type: 'todo' | 'done' }) {
   const img = type === 'todo' ? '/images/emptyToDo.svg' : '/images/emptyDone.svg';
   const caption =
-    type === 'todo'
-      ? '할 일이 없어요.\nTODO를 새롭게 추가해주세요!'
-      : '아직 완료된 일이 없어요.\n해야 할 일을 체크해 주세요!';
-
+    type === 'todo' ? '할 일이 없어요.\nTODO를 새롭게 추가해주세요!' : '아직 완료된 일이 없어요.\n해야 할 일을 체크해 주세요!';
   return (
     <div className={styles.empty}>
       <Image src={img} alt="" width={180} height={120} />

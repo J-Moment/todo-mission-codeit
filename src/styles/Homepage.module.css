@@ -4,12 +4,6 @@
     padding: 24px 20px 64px;
 }
 
-@media (min-width: 768px) {
-    .page {
-        padding: 28px 32px 96px;
-    }
-}
-
 .header {
     max-width: var(--max);
     margin: 0 auto;
@@ -32,7 +26,11 @@
     display: none;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 745px) {
+    .page {
+        padding: 28px 32px 96px;
+    }
+
     .addBtnLgWrap {
         display: none;
     }
@@ -52,7 +50,7 @@
     gap: 28px;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 745px) {
     .board {
         grid-template-columns: 1fr 1fr;
         column-gap: 56px;
