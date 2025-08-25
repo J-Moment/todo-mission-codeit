@@ -17,24 +17,28 @@ type Props = {
   onChange: (next: boolean) => void;
   /** 한 변 길이가 변수 --s로 전달되어 width/height에 사용 */
   size?: number;
+  className?: string;
 };
 
 export default function CheckToggle({
   checked,
   onChange,
   size = 32,
+  className
 }: Props
 ) {
   return (
     <button
-      className={styles.wrap}
-      /* CSS 변수 --s에 픽셀 값 주입 → .wrap { width/height: var(--s) } */
-      style={{ ['--s' as any]: `${size}px` }}
+      type="button"
+      role="checkbox"
+      aria-checked={checked}
+      aria-pressed={checked}
+      className={[styles.wrap, className].filter(Boolean).join(' ')}
       onClick={() => onChange(!checked)}
     >
       {checked ? (
         /* 체크 상태 */
-        <svg width="100%" height="100%" viewBox="0 0 32 32" fill="none">
+        <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden>
           <circle cx="16" cy="16" r="16" fill="var(--violet-600)" />
           <path
             d="M8 16.2857L13.8182 22L24 12"
@@ -46,7 +50,7 @@ export default function CheckToggle({
         </svg>
       ) : (
         /* 체크 안된 상태 */
-        <svg width="100%" height="100%" viewBox="0 0 32 32" fill="none">
+        <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden>
           <circle cx="16" cy="16" r="15" fill="#FEFCE8" stroke="var(--slate-900)" strokeWidth="2" />
         </svg>
       )}
