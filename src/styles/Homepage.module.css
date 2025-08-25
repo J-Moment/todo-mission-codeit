@@ -1,0 +1,84 @@
+/* 페이지 공통 */
+.page {
+    --max: 1120px;
+    padding: 24px 20px 64px;
+}
+
+@media (min-width: 768px) {
+    .page {
+        padding: 28px 32px 96px;
+    }
+}
+
+.header {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.inputRow {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+/* 반응형 버튼: 모바일은 아이콘, 데스크탑은 텍스트 버튼 */
+.addBtnLgWrap {
+    display: block;
+}
+
+.addBtnSm {
+    display: none;
+}
+
+@media (max-width: 640px) {
+    .addBtnLgWrap {
+        display: none;
+    }
+
+    /* 모바일에서 숨기기 */
+    .addBtnSm {
+        display: block;
+    }
+}
+
+/* 태블릿 => 데스크탑 */
+.board {
+    max-width: var(--max);
+    margin: 24px auto 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px;
+}
+
+@media (min-width: 1024px) {
+    .board {
+        grid-template-columns: 1fr 1fr;
+        column-gap: 56px;
+        row-gap: 0;
+        align-items: start;
+    }
+}
+
+.col {
+    min-width: 0;
+}
+
+.sectionHead {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 36px;
+    margin: 6px 0 12px;
+}
+
+/* 비어있을 경우*/
+.empty {
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    gap: 8px;
+    padding: 32px 0 40px;
+    color: #64748b;
+}
