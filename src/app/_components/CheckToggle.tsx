@@ -10,18 +10,21 @@
 'use client';
 import styles from '@/styles/CheckToggle.module.css';
 
-export default function ToggleCheck({
-  checked,
-  onChange,
-  size = 32,
-}: {
+type Props = {
   /** 현재 체크 상태 */
   checked: boolean;
   /** 상태 토글 콜백 */
-  onChange: (v: boolean) => void;
+  onChange: (next: boolean) => void;
   /** 한 변 길이가 변수 --s로 전달되어 width/height에 사용 */
   size?: number;
-}) {
+};
+
+export default function CheckToggle({
+  checked,
+  onChange,
+  size = 32,
+}: Props
+) {
   return (
     <button
       className={styles.wrap}

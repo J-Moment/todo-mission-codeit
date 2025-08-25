@@ -17,6 +17,17 @@ function toCheckItem(i: Item): CheckItem {
   return { id: String(i.id), label: i.name, checked: i.isCompleted };
 }
 
+// 에러 메시지 안전 추출 유틸
+function getErrorMessage(err: unknown): string {
+  if (err instanceof Error) return err.message;
+  if (typeof err === 'string') return err;
+  try {
+    return JSON.stringify(err);
+  } catch {
+    return 'Unknown error';
+  }
+}
+
 export default function HomePage() {
   const router = useRouter();
 
@@ -43,11 +54,11 @@ export default function HomePage() {
       const created = await createItem({ name });
       setItems((prev) => [created, ...prev]);
       setText('');
-    } catch (e: any) {
-      alert(e.message);
+    } catch (err: unknown) {
+      alert(getErrorMessage(err));
     }
   };
-// 엔터키 활용 가능 핸들러
+  // 엔터키 활용 가능 핸들러
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== 'Enter') return;
     if (e.nativeEvent.isComposing) return;
@@ -61,8 +72,8 @@ export default function HomePage() {
     try {
       const updated = await toggleComplete(item);
       setItems((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
-    } catch (e: any) {
-      alert(e.message);
+    } catch (err: unknown) {
+      alert(getErrorMessage(err));
     }
   };
 

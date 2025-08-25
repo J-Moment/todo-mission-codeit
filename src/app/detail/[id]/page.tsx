@@ -16,6 +16,18 @@ import X from '@/icons/X';
 
 import { getItem, updateItem, deleteItem, uploadImage, type Item } from '@/lib/api';
 
+// ✅ 에러 메시지 안전 추출 유틸
+function getErrorMessage(err: unknown): string {
+    if (err instanceof Error) return err.message;
+    if (typeof err === 'string') return err;
+    try {
+        return JSON.stringify(err);
+    } catch {
+        return 'Unknown error';
+    }
+}
+
+
 export default function DetailPage() {
     const router = useRouter();
     // URL 파라미터
@@ -36,7 +48,7 @@ export default function DetailPage() {
             try {
                 const item = await getItem(Number(id));
                 setData(item);
-            } catch (e: any) {
+            } catch (err: unknown) {
                 // 실패
                 setData({
                     id: Number(id),
@@ -81,8 +93,8 @@ export default function DetailPage() {
             const { url } = await uploadImage(f); // 5MB 검증 내장
             const updated = await updateItem(data.id, { imageUrl: url });
             setData(updated);
-        } catch (err: any) {
-            alert(err.message);
+        } catch (err: unknown) {
+            alert(getErrorMessage(err));
         } finally {
             if (inputEl) inputEl.value = '';
             if (fileRef.current && fileRef.current !== inputEl) {
@@ -107,8 +119,8 @@ export default function DetailPage() {
         try {
             const updated = await updateItem(data.id, { name });
             setData(updated);
-        } catch (e: any) {
-            alert(e.message);
+        } catch (err: unknown) {
+            alert(getErrorMessage(err));
         } finally {
             setEditing(false);
         }
@@ -119,8 +131,8 @@ export default function DetailPage() {
         try {
             const updated = await updateItem(data.id, { isCompleted: next });
             setData(updated);
-        } catch (e: any) {
-            alert(e.message);
+        } catch (err: unknown) {
+            alert(getErrorMessage(err));
         }
     };
 
@@ -163,8 +175,8 @@ export default function DetailPage() {
 
             // ✅ 저장 성공 → 목록으로 이동
             router.replace('/');
-        } catch (e: any) {
-            alert(e.message);
+        } catch (err: unknown) {
+            alert(getErrorMessage(err));
         } finally {
             setSaving(false);
         }
@@ -177,8 +189,8 @@ export default function DetailPage() {
         try {
             await deleteItem(data.id);
             router.replace('/');
-        } catch (e: any) {
-            alert(e.message);
+        } catch (err: unknown) {
+            alert(getErrorMessage(err));
         }
     };
 
