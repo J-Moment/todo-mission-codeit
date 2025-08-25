@@ -48,7 +48,7 @@ export default function DetailPage() {
             try {
                 const item = await getItem(Number(id));
                 setData(item);
-            } catch (err: unknown) {
+            } catch {
                 // 실패
                 setData({
                     id: Number(id),
@@ -62,7 +62,7 @@ export default function DetailPage() {
                 setLoading(false);
             }
         })();
-    }, [id]);
+    }, [id, q]);
 
     const [editing, setEditing] = useState(false);
     const [draft, setDraft] = useState('');
@@ -103,11 +103,6 @@ export default function DetailPage() {
         }
     };
 
-
-    const active = useMemo(
-        () => !!data && (data.isCompleted || !!(data.memo ?? '').trim() || !!data.imageUrl),
-        [data]
-    );
     // 제목 저장 
     const saveTitle = async () => {
         if (!data) return;
@@ -137,9 +132,10 @@ export default function DetailPage() {
     };
 
     const saveAll = async () => {
-        if (!data) return;
+        if (!data || saving) return;
 
         try {
+            setSaving(true);
             const patch: Partial<Item> = {};
 
             // 제목: 공백 제거 후 기존과 다를 때만 전송
@@ -240,16 +236,25 @@ export default function DetailPage() {
                     <div className={styles.imagePanel}>
                         <div className={`${styles.imageBox} ${data.imageUrl ? styles.hasImage : ''}`}>
                             {data.imageUrl ? (
-                                <img
-                                    src={data.imageUrl}
-                                    alt=""
-                                    style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 24 }}
-                                />
+                                <div className={styles.imageClip}>
+                                    <Image
+                                        src={data.imageUrl}
+                                        alt=""
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, 588px"
+                                        className={styles.coverImg}
+                                        unoptimized
+                                    />
+                                </div>
                             ) : (
                                 <div className={styles.placeholder}>
                                     <Image src="/icons/emptyImage.svg" alt="" width={64} height={64} />
                                 </div>
                             )}
+                            css
+                            복사
+                            편집
+
 
                             <div className={styles.addImageBtn}>
                                 <Button
@@ -286,6 +291,7 @@ export default function DetailPage() {
                         variant={data.isCompleted ? 'revise' : 'normal'}
                         className="text-16b"
                         onClick={saveAll}
+                        disabled={saving}
                     >
                         <Check size={16} /> 수정 완료
                     </Button>

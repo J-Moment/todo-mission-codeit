@@ -10,7 +10,7 @@ import Button from '@/app/_components/Button';
 import CheckList, { CheckItem } from '@/app/_components/CheckList';
 import Plus from '@/icons/Plus';
 
-import { listItems, createItem, toggleComplete, type Item } from '@/lib/api';
+import { listItems, createItem, updateItem, type Item } from '@/lib/api';
 
 // Item → CheckItem 변환
 function toCheckItem(i: Item): CheckItem {
@@ -66,16 +66,16 @@ export default function HomePage() {
     add();
   };
 
-  const toggle = async (id: string, next: boolean) => {
-    const item = items.find((i) => String(i.id) === id);
-    if (!item) return;
-    try {
-      const updated = await toggleComplete(item);
-      setItems((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
-    } catch (err: unknown) {
-      alert(getErrorMessage(err));
-    }
-  };
+const toggle = async (id: string, next: boolean) => {
+  const item = items.find((i) => String(i.id) === id);
+  if (!item) return;
+  try {
+    const updated = await updateItem(item.id, { isCompleted: next });
+    setItems((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
+  } catch (err: unknown) {
+    alert(err instanceof Error ? err.message : String(err));
+  }
+};
 
   // 라벨을 누르면 상세로 이동
   const openDetail = (ci: CheckItem) => router.push(`/detail/${ci.id}?label=${encodeURIComponent(ci.label)}&checked=${ci.checked ? '1' : '0'}`);

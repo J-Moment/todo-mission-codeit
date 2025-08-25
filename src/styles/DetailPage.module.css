@@ -82,6 +82,18 @@
     overflow: hidden;
 }
 
+
+.imageClip {
+    position: absolute;
+    inset: 0;
+    border-radius: 24px;
+    overflow: hidden;
+}
+
+.coverImg {
+    object-fit: cover;
+}
+
 /* 메모 */
 .memoPanel {
     width: 588px;
