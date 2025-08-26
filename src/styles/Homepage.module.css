@@ -1,19 +1,19 @@
 /* 페이지 공통 */
 .page {
-    --max: 1220px;
-    padding: 24px 20px;
+    --max: 1200px;
+    padding: 24px;
 }
 
 .header {
-    max-width: var(--max);
     margin: 0 auto;
-    padding-bottom: 16px;
 }
 
 .inputRow {
-    max-width: 1220px;
+    max-width: var(--max);
     margin: 0 auto;
-    padding: 10px 20px;
+    padding: 10px;
+
+    flex: 1 1 0%;
 
     display: flex;
     gap: 16px;
@@ -70,10 +70,11 @@
 
 .sectionHead {
     display: flex;
+    max-width: var(--max);
     align-items: center;
     justify-content: flex-start;
     height: 36px;
-    margin: 6px 0 12px;
+    margin: 0 0 12px;
 }
 
 /* 비어있을 경우*/

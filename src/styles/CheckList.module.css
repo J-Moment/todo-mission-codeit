@@ -8,22 +8,19 @@
 
 /* 캡슐 */
 .item {
-    --h: 64px;
-    --pad-x: 20px;
+    --h: 50px;
     --gap: 16px;
 
     min-height: var(--h);
-    padding: 0 var(--pad-x);
     display: flex;
     align-items: center;
     gap: var(--gap);
 
+    box-sizing: border-box;
     border: 2px solid var(--slate-900);
     border-radius: 50px;
     background: #fff;
     color: var(--slate-900);
-
-    box-shadow: 3.65px 4px 0 0 var(--slate-900);
 
     cursor: pointer;
     user-select: none;
