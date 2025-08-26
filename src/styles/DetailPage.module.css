@@ -120,12 +120,17 @@
     bottom: 16px;
 }
 
+.plusBtn {
+    background: var(--slate-200);
+    color: var(--slate-500);
+}
+
 .penBtn {
     box-shadow: none !important;
-    background: #0f172a;
-    /* slate-900 */
-    color: #fff;
-    border: 2px solid var(--slate-900);
+    background: #0F172A80 !important;
+    
+    color: #fff !important;
+    border: 2px solid var(--slate-900) !important;
 }
 
 .penBtn:focus-visible {

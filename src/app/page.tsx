@@ -47,6 +47,9 @@ export default function HomePage() {
   const todo = useMemo(() => items.filter((i) => !i.isCompleted).map(toCheckItem), [items]);
   const done = useMemo(() => items.filter((i) => i.isCompleted).map(toCheckItem), [items]);
 
+  //empty일때 버튼 보라색 변경
+  const ButtonVariant = (todo.length === 0 && done.length === 0) ? 'emptyAdd' : 'normal';
+
   const add = async () => {
     const name = text.trim();
     if (!name) return;
@@ -66,16 +69,16 @@ export default function HomePage() {
     add();
   };
 
-const toggle = async (id: string, next: boolean) => {
-  const item = items.find((i) => String(i.id) === id);
-  if (!item) return;
-  try {
-    const updated = await updateItem(item.id, { isCompleted: next });
-    setItems((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
-  } catch (err: unknown) {
-    alert(err instanceof Error ? err.message : String(err));
-  }
-};
+  const toggle = async (id: string, next: boolean) => {
+    const item = items.find((i) => String(i.id) === id);
+    if (!item) return;
+    try {
+      const updated = await updateItem(item.id, { isCompleted: next });
+      setItems((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : String(err));
+    }
+  };
 
   // 라벨을 누르면 상세로 이동
   const openDetail = (ci: CheckItem) => router.push(`/detail/${ci.id}?label=${encodeURIComponent(ci.label)}&checked=${ci.checked ? '1' : '0'}`);
@@ -94,14 +97,14 @@ const toggle = async (id: string, next: boolean) => {
 
           {/* 데스크탑/태블릿 버튼 */}
           <div className={styles.addBtnLgWrap}>
-            <Button variant="normal" className="text-16b" onClick={add}>
+            <Button variant={ButtonVariant} className="text-16b" onClick={add}>
               <Plus size={16} /> 추가하기
             </Button>
           </div>
 
           {/* 모바일: miniPill 만 보이게 해 둔 상태 */}
           <div className={styles.addBtnSm}>
-            <Button variant="normal" shape="miniPill" aria-label="할 일 추가" onClick={add}>
+            <Button variant={ButtonVariant} shape="miniPill" aria-label="할 일 추가" onClick={add}>
               <Plus size={16} />
             </Button>
           </div>
@@ -141,7 +144,7 @@ function Empty({ type }: { type: 'todo' | 'done' }) {
     type === 'todo' ? '할 일이 없어요.\nTODO를 새롭게 추가해주세요!' : '아직 완료된 일이 없어요.\n해야 할 일을 체크해 주세요!';
   return (
     <div className={styles.empty}>
-      <Image src={img} alt="" width={180} height={120} />
+      <Image src={img} alt="" width={240} height={240} />
       <p className="text-14r" style={{ whiteSpace: 'pre-line' }}>{caption}</p>
     </div>
   );

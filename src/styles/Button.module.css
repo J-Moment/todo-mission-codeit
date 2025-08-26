@@ -39,9 +39,11 @@
 /* 원형(아이콘 전용) */
 .circle {
   padding: 0;
+  box-shadow: none;
   border-radius: 9999px;
   gap: 0;
-  box-shadow: 3px 4px 0 0 var(--slate-900);
+  background: var(--slate-200);
+  border: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;

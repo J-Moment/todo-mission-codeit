@@ -257,11 +257,11 @@ export default function DetailPage() {
                                 <Button
                                     shape="circle"
                                     size={64}
-                                    className={styles.penBtn}
+                                    className={data.imageUrl ? styles.penBtn : styles.plusBtn}
                                     aria-label={data.imageUrl ? '이미지 수정' : '이미지 추가'}
                                     onClick={pickImage}
                                 >
-                                    {data.imageUrl ? <Pen size={22} /> : <Plus size={22} />}
+                                    {data.imageUrl ? <Pen color="#fff" size={22} /> : <Plus size={22} />}
                                 </Button>
                             </div>
                             <input ref={fileRef} type="file" accept="image/*" hidden onChange={onFile} />
