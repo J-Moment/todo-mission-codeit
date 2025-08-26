@@ -278,7 +278,7 @@ export default function DetailPage() {
                             width={588}
                             height={311}
                             placeholder="메모를 입력하세요"
-                            value={data.memo ?? ''}
+                            defaultValue={data.memo ?? ''}
                             onChange={(e) => setData((prev) => (prev ? { ...prev, memo: e.target.value } : prev))}
                             className="text-16r"
                         />
