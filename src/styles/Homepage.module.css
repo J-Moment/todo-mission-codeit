@@ -1,17 +1,20 @@
 /* 페이지 공통 */
 .page {
-    --max: 1120px;
-    padding: 24px 20px 64px;
+    --max: 1220px;
+    padding: 24px 20px;
 }
 
 .header {
     max-width: var(--max);
     margin: 0 auto;
     padding-bottom: 16px;
-    border-bottom: 1px solid #e2e8f0;
 }
 
 .inputRow {
+    max-width: 1220px;
+    margin: 0 auto;
+    padding: 10px 20px;
+
     display: flex;
     gap: 16px;
     align-items: center;
@@ -26,21 +29,6 @@
     display: none;
 }
 
-@media (max-width: 745px) {
-    .page {
-        padding: 28px 32px 96px;
-    }
-
-    .addBtnLgWrap {
-        display: none;
-    }
-
-    /* 모바일에서 숨기기 */
-    .addBtnSm {
-        display: block;
-    }
-}
-
 /* 태블릿 => 데스크탑 */
 .board {
     max-width: var(--max);
@@ -50,12 +38,29 @@
     gap: 28px;
 }
 
+/* 태블릿 */
 @media (min-width: 745px) {
-    .board {
-        grid-template-columns: 1fr 1fr;
-        column-gap: 56px;
-        row-gap: 0;
-        align-items: start;
+  .board {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 56px;
+    row-gap: 0;
+    align-items: start;
+  }
+}
+
+/* 모바일 */
+@media (max-width: 375px) {
+    .page {
+        padding: 28px 32px 96px;
+    }
+
+    .addBtnLgWrap {
+        display: none;
+    }
+
+    
+    .addBtnSm {
+        display: block;
     }
 }
 

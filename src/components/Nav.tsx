@@ -8,8 +8,8 @@ export default function Nav() {
   return (
     <nav className={styles.nav}>
       <div className={styles.inner}>
-        <Link href="/" className={styles.logoLink}>
-          {/* 데스크탑/태블릿v */}
+        <Link href="/">
+          {/* 데스크탑/태블릿 */}
           <Image
             src="/icons/logoLarge.svg"
             alt="do it;"

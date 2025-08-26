@@ -1,4 +1,4 @@
-/* 래퍼: 높이만 고정, 가로는 props(full/width)로 제어 */
+/* 래퍼 */
 .wrap {
   position: relative;
   display: block;
@@ -13,7 +13,7 @@
   min-width: 0;
 }
 
-/* 실제 입력 */
+/* 입력 */
 .input {
   box-sizing: border-box;
   width: 100%;
@@ -32,7 +32,7 @@
     1.65px 2px 0 0 var(--slate-900),
     1.65px 2px 0 2px var(--slate-900);
 
-  /* 내부 폰트(전역 .text-16r와 동일하게 유지) */
+  /* 내부 폰트 text-16 */
   font: 400 16px/1 'NanumSquare', sans-serif;
 }
 
@@ -44,7 +44,7 @@
   opacity: 1;
 }
 
-/* 포커스 링: 보라 외곽선 추가 */
+/* 포커스 링  */
 .input:focus {
   outline: none;
   box-shadow:

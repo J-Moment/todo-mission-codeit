@@ -9,12 +9,12 @@
   line-height: 0;
 }
 
-/* 마우스로 클릭(활성) 시 애니메이션 */
+/* 마우스로 클릭 시 애니메이션 */
 .wrap:active {
     transform: translateY(1px);
 }
 
-/* 키보드 포커스 링(접근성) */
+/* 키보드 포커스 링 */
 .wrap:focus-visible {
   outline: 2px solid var(--violet-600);
   outline-offset: 2px;
