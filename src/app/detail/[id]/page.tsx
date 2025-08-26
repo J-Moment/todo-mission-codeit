@@ -81,10 +81,10 @@ export default function DetailPage() {
         const f = inputEl.files?.[0];
         if (!f || !data) return;
 
-        const nameOk = /^[A-Za-z0-9._-]+$/.test(f.name);
+        const nameOk = /^[A-Za-z]+\.(?:jpe?g|png|gif|webp|svg|heic|heif|bmp|tiff?)$/i.test(f.name);
 
         if (!nameOk) {
-            alert('파일명에 영어만 사용 가능합니다다.');
+            alert('파일은 영어로만 된 이름을 가진 이미지만 가능합니다.');
             inputEl.value = '';
             return;
         }
