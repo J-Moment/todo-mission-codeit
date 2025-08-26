@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams, useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 
@@ -42,6 +42,12 @@ export default function DetailPage() {
     //자동 저장 방지
     const [saving, setSaving] = useState(false);
 
+    //수정 파일
+    const [editing, setEditing] = useState(false);
+
+    //할 일 이름
+    const [draft, setDraft] = useState('');
+
     // 초기 조회
     useEffect(() => {
         (async () => {
@@ -63,9 +69,6 @@ export default function DetailPage() {
             }
         })();
     }, [id, q]);
-
-    const [editing, setEditing] = useState(false);
-    const [draft, setDraft] = useState('');
 
     useEffect(() => {
         if (data) setDraft(data.name);
@@ -169,7 +172,7 @@ export default function DetailPage() {
 
             await updateItem(data.id, patch);
 
-            // ✅ 저장 성공 → 목록으로 이동
+            // 목록으로 이동
             router.replace('/');
         } catch (err: unknown) {
             alert(getErrorMessage(err));
@@ -215,18 +218,16 @@ export default function DetailPage() {
                             {data.name}
                         </button>
                     ) : (
-                        <div className={styles.titleEdit}>
-                            <input
-                                className={`${styles.titleInput} text-16r`}
-                                value={draft}
-                                onChange={(e) => setDraft(e.target.value)}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter') saveTitle();
-                                    if (e.key === 'Escape') setEditing(false);
-                                }}
-                                autoFocus
-                            />
-                        </div>
+                        <input
+                            className={`${styles.titleInput} text-16r`}
+                            value={draft}
+                            onChange={(e) => setDraft(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') saveTitle();
+                                if (e.key === 'Escape') setEditing(false);
+                            }}
+                            autoFocus
+                        />
                     )}
                 </div>
 
@@ -251,10 +252,6 @@ export default function DetailPage() {
                                     <Image src="/icons/emptyImage.svg" alt="" width={64} height={64} />
                                 </div>
                             )}
-                            css
-                            복사
-                            편집
-
 
                             <div className={styles.addImageBtn}>
                                 <Button
