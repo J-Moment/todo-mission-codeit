@@ -1,19 +1,23 @@
 .wrap {
-    /* 라운드와 줄 간격/두께, 타이틀 스타일 변수 */
+    /* 카드 모서리 */
     --r: 28px;
     /* 줄 간격 = 본문 line-height */
+    --h: 200px;
     --line: 32px;
     /* 줄 두께 */
     --rule: 2px;
     --title-top: 24px;
+    /* 제목과 메모 사이의 공간 */
+    --title-gap: 34px;
     --title-size: 18px;
     --title-weight: 800;
     --title-color: #92400E;
 
     position: relative;
     border-radius: var(--r);
+    overflow: hidden;
 
-    /* 줄선 배경: 연노랑 바탕 위에 연노랑-보더 색으로 반복 라인 */
+    /* 줄선 배경 */
     background:
         repeating-linear-gradient(0deg,
             #FEF3C7 0,
@@ -21,7 +25,8 @@
             transparent var(--rule),
             transparent var(--line)),
         #FEFCE8;
-    overflow: hidden;
+
+    background-position: 0 calc(var(--title-top) + var(--title-gap));
 }
 
 .full {
@@ -38,32 +43,44 @@
     font: var(--title-weight) var(--title-size)/1 'NanumSquare', sans-serif;
     color: var(--title-color);
     pointer-events: none;
-    /* 입력 방해 방지 */
 }
 
 .area {
     position: absolute;
-    left: 20px;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    height: var(--line);
+    left: 16px;
+    right: 16px;
+    top: calc(var(--title-top) + var(--title-gap));
+
     box-sizing: border-box;
     padding: 0;
     border: 0;
     outline: 0;
-    resize: none;
-    overflow: hidden;
+
+    height: var(--h);
+    line-height: var(--line);
+
+    padding-top: calc((var(--h) - var(--line)) / 2);
+    padding-bottom: calc((var(--h) - var(--line)) / 2);
+
     background: transparent;
     border-radius: var(--r);
 
+    /* 세로 스크롤 */
+    overflow-y: auto;
+
+    scrollbar-width: thin;
+    scrollbar-color: #FDE68A transparent;
+
+    text-align: center;
+    resize: none;
+
     color: #1E293B;
     caret-color: #0F172A;
-    text-align: center;
     font: 400 16px/32px 'NanumSquare', sans-serif;
 }
 
 .area::placeholder {
+    text-align: center;
     font: inherit;
     color: #64748B;
     opacity: 1;
